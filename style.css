@@ -1,0 +1,1622 @@
+/* CSS Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #ff6b8b;
+    --primary-light: #ffccd5;
+    --secondary-color: #8a4fff;
+    --accent-color: #00c9b7;
+    --light-color: #f9f5ff;
+    --dark-color: #3a3845;
+    --text-color: #333;
+    --text-light: #666;
+    --border-color: #e0d6ff;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: #fef9ff;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.2rem;
+    color: var(--dark-color);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+h3 {
+    font-size: 1.4rem;
+    color: var(--secondary-color);
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+a {
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+/* Button Styles */
+.btn-primary, .btn-secondary {
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    border: none;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #ff5573;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.btn-secondary {
+    background-color: white;
+    color: var(--secondary-color);
+    border: 2px solid var(--secondary-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--light-color);
+}
+
+/* Header & Navigation */
+.header {
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.logo i {
+    font-size: 1.8rem;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.nav-link:hover, .nav-link.active {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+.theme-toggle-btn {
+    display: inline-flex;
+    position: static;
+    float: none;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: 0;
+    width: fit-content;
+}
+
+/* Hero Section */
+.hero {
+    width: 100vw;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.hero-content {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    text-align: center !important;
+}
+
+
+
+.profile-settings {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 420px;
+    margin-top: 10px;
+}
+.profile-settings label {
+    margin-bottom: 0;
+}
+.profile-settings input {
+    flex: 1;
+}
+
+.mode-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.mode-toggle .theme-toggle-btn {
+    margin-left: auto;
+}
+
+.mode-toggle span {
+    color: var(--text-light);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--border-color);
+    border-radius: 24px;
+    transition: var(--transition);
+}
+
+/* Dark Mode Color Variables */
+body.dark-mode {
+    --light-color: #2d2b36;
+    --dark-color: #f9f5ff;
+    --text-color: #e0e0e0;
+    --text-light: #b0b0b0;
+    --border-color: #4a4758;
+    background-color: #1a1821;
+}
+
+/* Specific Dark Mode Overrides */
+body.dark-mode .header,
+body.dark-mode .section,
+body.dark-mode .btn-secondary,
+body.dark-mode .symptom-btn,
+body.dark-mode .severity-btn,
+body.dark-mode .exercise-btn,
+body.dark-mode .nav-links {
+    background-color: #24222c;
+    color: var(--text-color);
+}
+
+body.dark-mode .prediction-card,
+body.dark-mode .calendar,
+body.dark-mode .ai-response,
+body.dark-mode .tip-card,
+body.dark-mode .exercise-card,
+body.dark-mode .post {
+    background-color: #2d2b36;
+}
+body.dark-mode .recommendation-card {
+    background-color: #2d2b36;
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+body.dark-mode .recommendation-card p {
+    color: var(--text-color);
+}
+body.dark-mode .hydration-tracker,
+body.dark-mode .supplements-tracker {
+    background-color: #24222c;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+body.dark-mode .fallback-instructions {
+    background-color: #24222c;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+body.dark-mode .footer {
+    background-color: #24222c;
+    color: var(--text-color);
+}
+body.dark-mode .footer-links a {
+    color: var(--text-color);
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+    background-color: #1a1821;
+    color: white;
+    border-color: var(--border-color);
+}
+
+body.dark-mode h1, 
+body.dark-mode h4 {
+    color: white;
+}
+
+/* Maintain visibility of the Hero icon in dark mode */
+body.dark-mode .hero-image i {
+    color: #4a4758;
+}
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+input:checked + .toggle-slider {
+    background-color: var(--secondary-color);
+}
+
+input:checked + .toggle-slider:before {
+    transform: translateX(22px);
+}
+
+/* Section Styles */
+.section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 30px;
+    margin-bottom: 40px;
+    box-shadow: var(--shadow);
+}
+
+/* Cycle Tracking */
+.tracking-container {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(255, 107, 139, 0.2);
+}
+
+.checkbox-group {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-rows: repeat(2, auto);
+    gap: 15px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.predictions {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.prediction-card {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    text-align: center;
+}
+
+.prediction-card h4 {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.prediction-card p {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+#trends .prediction-card {
+    min-height: 250px;
+}
+
+.calendar {
+    background-color: var(--light-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+    padding: 5px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.calendar-day:hover {
+    background-color: #f0ecff;
+}
+
+.calendar-day.has-entry {
+    box-shadow: inset 0 0 0 2px var(--secondary-color);
+}
+
+.calendar-day.period {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+}
+
+.calendar-day.fertile {
+    background-color: #e0f7fa;
+    color: var(--accent-color);
+}
+
+.calendar-day.ovulation {
+    background-color: #e8f5e9;
+    color: var(--success-color);
+}
+
+.calendar-day-header {
+    font-weight: 600;
+    color: var(--text-light);
+    text-align: center;
+    padding: 10px 0;
+}
+
+.day-details {
+    margin-top: 12px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 12px 16px;
+    min-height: 60px;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    width: 90%;
+    max-width: 480px;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 16px;
+}
+
+/* Symptom Checker */
+.disclaimer {
+    background-color: #fff3cd;
+    border-left: 4px solid var(--warning-color);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 25px;
+}
+
+.disclaimer p {
+    margin: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.symptom-checker-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.symptom-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.bmr-core-inputs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.symptom-btn {
+    padding: 10px 15px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.symptom-btn:hover, .symptom-btn.active {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.ai-response {
+    background-color: var(--light-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    min-height: 150px;
+}
+
+.recommendation-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.recommendation-card {
+    background-color: white;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.recommendation-card i {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.recommendation-card h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.recommendation-card p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Menopause Support */
+.menopause-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.hydration-tracker, .supplements-tracker {
+    margin-top: 20px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+}
+
+.hydration-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.symptom-item {
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.symptom-item label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.severity-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.severity-btn {
+    flex: 1;
+    padding: 10px 5px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.severity-btn:hover, .severity-btn.active {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.tips-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.tip-card {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: var(--border-radius);
+}
+
+.tip-card i {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+}
+
+.tip-card h4 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.tip-card p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* Exercises Section */
+.exercise-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.exercise-card {
+    background-color: var(--light-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    display: none;
+}
+
+.exercise-card.active {
+    display: block;
+}
+
+.exercise-steps p {
+    margin-bottom: 10px;
+}
+
+.exercise-selector {
+    display: flex;
+    gap: 10px;
+}
+
+.exercise-btn {
+    flex: 1;
+    padding: 12px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.exercise-btn:hover, .exercise-btn.active {
+    background-color: var(--primary-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.sensor-status {
+    background-color: var(--light-color);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+#motionLevel {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.exercise-visual {
+    background-color: #f0f0f0;
+    height: 200px;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.pelvic-visual {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: background 0.35s ease;
+}
+
+.pelvic-visual::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.75;
+}
+
+.pelvic-visual.exercise-kegel {
+    background: radial-gradient(circle at 50% 48%, rgba(255, 190, 206, 0.5) 0%, rgba(255, 190, 206, 0.05) 74%);
+}
+
+.pelvic-visual.exercise-kegel::before {
+    background: radial-gradient(circle at 50% 55%, rgba(255, 105, 135, 0.22) 0%, rgba(255, 105, 135, 0) 68%);
+}
+
+.pelvic-visual.exercise-bridge {
+    background: linear-gradient(180deg, rgba(190, 246, 255, 0.5) 0%, rgba(190, 246, 255, 0.04) 85%);
+}
+
+.pelvic-visual.exercise-bridge::before {
+    background:
+        linear-gradient(120deg, rgba(20, 184, 166, 0.18) 0%, rgba(20, 184, 166, 0) 65%),
+        radial-gradient(circle at 50% 68%, rgba(56, 189, 248, 0.2) 0%, rgba(56, 189, 248, 0) 70%);
+}
+
+.pelvic-visual.exercise-deepBreathing {
+    background: radial-gradient(circle at 50% 55%, rgba(191, 219, 254, 0.55) 0%, rgba(191, 219, 254, 0.08) 78%);
+}
+
+.pelvic-visual.exercise-deepBreathing::before {
+    background: radial-gradient(circle at 50% 58%, rgba(96, 165, 250, 0.2) 0%, rgba(96, 165, 250, 0) 72%);
+    animation: breathingAura 4.5s ease-in-out infinite;
+}
+
+.muscle-group {
+    position: absolute;
+    width: 120px;
+    height: 80px;
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: var(--transition);
+    box-shadow: 0 0 0 rgba(255, 107, 139, 0.25);
+}
+
+.contraction-indicator {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.pelvic-visual.exercise-kegel .muscle-group {
+    background: linear-gradient(180deg, #ffd3dc 0%, #ffb5c7 100%);
+}
+
+.pelvic-visual.exercise-kegel .contraction-indicator {
+    background: radial-gradient(circle at 50% 45%, #ff7ea5 0%, #ff5c8c 72%);
+}
+
+.pelvic-visual.exercise-bridge .muscle-group {
+    background: linear-gradient(180deg, #c7f9f4 0%, #99f6e4 100%);
+    border-radius: 35% 35% 45% 45%;
+}
+
+.pelvic-visual.exercise-bridge .contraction-indicator {
+    width: 118px;
+    height: 42px;
+    border-radius: 28px;
+    background: linear-gradient(90deg, #2dd4bf 0%, #22d3ee 100%);
+}
+
+.pelvic-visual.exercise-deepBreathing .muscle-group {
+    background: radial-gradient(circle at 50% 40%, #dbeafe 0%, #bfdbfe 100%);
+    border-radius: 42%;
+}
+
+.pelvic-visual.exercise-deepBreathing .contraction-indicator {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.6) 0%, rgba(37, 99, 235, 0.28) 70%, rgba(37, 99, 235, 0.04) 100%);
+}
+
+.pelvic-visual.phase-contract .contraction-indicator {
+    opacity: 1;
+    animation: contractPulse 0.9s ease-in-out infinite;
+}
+
+.pelvic-visual.phase-hold .contraction-indicator {
+    opacity: 1;
+    animation: holdPulse 1.2s ease-in-out infinite;
+}
+
+.pelvic-visual.phase-relax .contraction-indicator {
+    opacity: 0.35;
+    animation: relaxPulse 1.6s ease-in-out infinite;
+}
+
+.pelvic-visual.phase-contract .muscle-group {
+    box-shadow: 0 0 26px rgba(255, 107, 139, 0.4);
+}
+
+.pelvic-visual.phase-hold .muscle-group {
+    box-shadow: 0 0 18px rgba(255, 107, 139, 0.3);
+}
+
+.pelvic-visual.phase-relax .muscle-group {
+    box-shadow: 0 0 8px rgba(255, 107, 139, 0.18);
+}
+
+.pelvic-visual.exercise-kegel.phase-contract .contraction-indicator {
+    animation: kegelContractPulse 0.56s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-kegel.phase-hold .contraction-indicator {
+    animation: kegelHoldPulse 0.9s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-kegel.phase-contract .muscle-group {
+    box-shadow: 0 0 24px rgba(255, 92, 140, 0.45);
+}
+
+.pelvic-visual.exercise-bridge.phase-contract .contraction-indicator {
+    animation: bridgeContractLift 1.1s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-bridge.phase-hold .contraction-indicator {
+    animation: bridgeHoldStability 1.4s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-bridge.phase-relax .contraction-indicator {
+    animation: bridgeRelaxDrop 1.6s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-bridge.phase-contract .muscle-group {
+    box-shadow: 0 0 28px rgba(34, 211, 238, 0.42);
+}
+
+.pelvic-visual.exercise-deepBreathing.phase-contract .contraction-indicator {
+    animation: breathingContractExpand 2.8s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-deepBreathing.phase-hold .contraction-indicator {
+    animation: breathingHoldGlow 2.2s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-deepBreathing.phase-relax .contraction-indicator {
+    animation: breathingRelaxDrift 3.2s ease-in-out infinite;
+}
+
+.pelvic-visual.exercise-deepBreathing.phase-contract .muscle-group,
+.pelvic-visual.exercise-deepBreathing.phase-hold .muscle-group {
+    box-shadow: 0 0 26px rgba(37, 99, 235, 0.34);
+}
+
+@keyframes contractPulse {
+    0% { transform: translate(-50%, -50%) scale(0.86); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+    100% { transform: translate(-50%, -50%) scale(0.9); }
+}
+
+@keyframes holdPulse {
+    0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.9; }
+    50% { transform: translate(-50%, -50%) scale(1.0); opacity: 0.96; }
+    100% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.9; }
+}
+
+@keyframes relaxPulse {
+    0% { transform: translate(-50%, -50%) scale(0.78); opacity: 0.25; }
+    50% { transform: translate(-50%, -50%) scale(0.86); opacity: 0.4; }
+    100% { transform: translate(-50%, -50%) scale(0.78); opacity: 0.25; }
+}
+
+@keyframes kegelContractPulse {
+    0% { transform: translate(-50%, -50%) scale(0.9); }
+    45% { transform: translate(-50%, -50%) scale(1.08); }
+    100% { transform: translate(-50%, -50%) scale(0.92); }
+}
+
+@keyframes kegelHoldPulse {
+    0% { transform: translate(-50%, -50%) scale(0.98); opacity: 0.85; }
+    50% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0.98); opacity: 0.85; }
+}
+
+@keyframes bridgeContractLift {
+    0% { transform: translate(-50%, -44%) scaleX(0.9); opacity: 0.78; }
+    50% { transform: translate(-50%, -54%) scaleX(1.08); opacity: 1; }
+    100% { transform: translate(-50%, -44%) scaleX(0.92); opacity: 0.82; }
+}
+
+@keyframes bridgeHoldStability {
+    0% { transform: translate(-50%, -50%) scaleX(1); opacity: 0.92; }
+    50% { transform: translate(-50%, -50%) scaleX(1.04); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scaleX(1); opacity: 0.92; }
+}
+
+@keyframes bridgeRelaxDrop {
+    0% { transform: translate(-50%, -49%) scaleX(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -42%) scaleX(0.88); opacity: 0.22; }
+}
+
+@keyframes breathingContractExpand {
+    0% { transform: translate(-50%, -50%) scale(0.84); opacity: 0.3; }
+    50% { transform: translate(-50%, -50%) scale(1.18); opacity: 0.78; }
+    100% { transform: translate(-50%, -50%) scale(0.84); opacity: 0.3; }
+}
+
+@keyframes breathingHoldGlow {
+    0% { transform: translate(-50%, -50%) scale(1.02); opacity: 0.65; }
+    50% { transform: translate(-50%, -50%) scale(1.06); opacity: 0.82; }
+    100% { transform: translate(-50%, -50%) scale(1.02); opacity: 0.65; }
+}
+
+@keyframes breathingRelaxDrift {
+    0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.35; }
+    50% { transform: translate(-50%, -46%) scale(0.82); opacity: 0.2; }
+    100% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.35; }
+}
+
+@keyframes breathingAura {
+    0% { opacity: 0.45; }
+    50% { opacity: 0.85; }
+    100% { opacity: 0.45; }
+}
+
+.exercise-timer {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    margin-bottom: 20px;
+}
+
+.exercise-controls {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.fallback-instructions {
+    background-color: #e3f2fd;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+/* Community Forum */
+.forum-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+
+.topic-list {
+    margin-bottom: 20px;
+}
+
+.topic-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.topic-item:hover, .topic-item.active {
+    background-color: var(--primary-light);
+}
+
+.topic-item:focus-visible {
+    outline: 2px solid var(--secondary-color);
+    outline-offset: 2px;
+}
+
+.topic-item i {
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.topic-item h4 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.topic-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.posts-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 10px;
+}
+
+.post {
+    background-color: var(--light-color);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    margin-bottom: 15px;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.post-content p {
+    margin: 0;
+}
+
+.forum-connect {
+    display: flex;
+	flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: left;
+}
+
+.forum-connect input[type="url"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.forum-help {
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.forum-embed iframe {
+    width: 100%;
+    min-height: 600px;
+    border: 0;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.forum-status {
+    margin: 10px 0 15px 0;
+    font-size: 0.95rem;
+    color: var(--text-light);
+}
+
+.forum-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+
+.new-topic-form {
+    margin-top: 12px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--light-color);
+}
+
+.toast-root {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 1200;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast-item {
+    background: rgba(17, 24, 39, 0.95);
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    min-width: 220px;
+    max-width: 360px;
+    font-size: 0.9rem;
+}
+
+
+/* Footer */
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.footer > .container > p {
+    margin-bottom: 10px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.footer-links {
+    margin-top: 20px;
+}
+
+.footer-links a {
+    color: white;
+    margin: 0 10px;
+}
+
+.footer-actions {
+    margin-top: 14px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-danger {
+    border-color: var(--danger-color);
+    color: var(--danger-color);
+}
+
+.btn-danger:hover {
+    background-color: #ffeaea;
+}
+
+.page-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+}
+.page-overlay.hidden {
+    display: none;
+}
+.page-frame {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    width: 95%;
+    max-width: 1000px;
+    max-height: 90vh;
+    overflow: auto;
+}
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.page-content {
+    padding: 16px;
+    color: #2a2a2a;
+    text-align: left;
+}
+
+.page-content .section {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.page-content h2,
+.page-content h3,
+.page-content h4,
+.page-content p,
+.page-content li {
+    text-align: left;
+}
+
+.page-content h2 {
+    justify-content: flex-start;
+}
+
+.page-content ul {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.page-content #about-app h2,
+.page-content #about-app h3 {
+    display: block !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    margin-left: 0 !important;
+    width: 100%;
+}
+
+.page-overlay .page-content .section h2,
+.page-overlay .page-content .section h3,
+.page-overlay .page-content .section h4,
+.page-overlay .page-content .section p,
+.page-overlay .page-content .section li {
+    text-align: left !important;
+    justify-content: flex-start !important;
+}
+
+.page-overlay .page-content .section p {
+    max-width: none !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+body.dark-mode .page-frame {
+    background: #24222c;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+body.dark-mode .page-header {
+    border-color: var(--border-color);
+}
+body.dark-mode .page-content {
+    color: var(--text-color);
+}
+
+.sr-source {
+    display: none !important;
+    visibility: hidden;
+}
+.footer details {
+    text-align: left;
+    max-width: 900px;
+    margin: 16px auto 0 auto;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+}
+.footer details summary {
+    font-weight: 600;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+.footer details[open] summary {
+    margin-bottom: 10px;
+}
+.footer details ul {
+    padding-left: 18px;
+}
+.footer details a {
+    color: var(--secondary-color);
+}
+
+body.dark-mode .footer details {
+    background-color: #24222c;
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+body.dark-mode .footer details summary {
+    color: var(--text-color);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .tracking-container,
+    .symptom-checker-container,
+    .menopause-container,
+    .exercise-container,
+    .forum-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .predictions,
+    .recommendation-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .tips-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-image {
+        display: none;
+    }
+    
+    .nav-links {
+        display: flex;
+        position: static;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 12px;
+        padding: 8px 0;
+        background: transparent;
+        box-shadow: none;
+        scrollbar-width: none;
+    }
+    .nav-links::-webkit-scrollbar {
+        display: none;
+    }
+    .nav-links .nav-link {
+        white-space: nowrap;
+    }
+    .menu-toggle {
+        display: none;
+    }
+    .theme-toggle-btn {
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .predictions,
+    .recommendation-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile WebView fix */
+@media (max-width: 768px) {
+    .hero-content {
+        padding-left: 16px;
+        padding-right: 16px;
+        width: 100%;
+    }
+    #tracking .predictions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+    #tracking .prediction-card {
+        padding: 10px 8px;
+    }
+    #tracking .prediction-card h4 {
+        font-size: 0.82rem;
+        margin-bottom: 4px;
+        line-height: 1.2;
+    }
+    #tracking .prediction-card p {
+        font-size: 0.9rem;
+        line-height: 1.2;
+        word-break: break-word;
+    }
+    #nutrition .bmr-core-inputs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+    }
+    #nutrition .bmr-core-inputs .form-group {
+        margin-bottom: 10px;
+    }
+    #nutrition .bmr-core-inputs label {
+        font-size: 0.78rem;
+        margin-bottom: 4px;
+        line-height: 1.15;
+    }
+    #nutrition .bmr-core-inputs input {
+        padding: 8px 6px;
+        font-size: 0.9rem;
+    }
+    #symptom-checker .symptom-buttons {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+    }
+    #symptom-checker .symptom-btn {
+        width: 100%;
+        min-height: 44px;
+        padding: 8px 6px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        line-height: 1.15;
+        text-align: center;
+    }
+    #menopause .symptom-severity {
+        display: block;
+        overflow: visible;
+        padding-bottom: 0;
+    }
+    #menopause .symptom-item {
+        margin-bottom: 14px;
+        padding: 0 0 12px 0;
+        border: none;
+        border-bottom: 1px solid var(--border-color);
+        border-radius: 0;
+        background-color: transparent;
+    }
+    #menopause .symptom-item label {
+        font-size: 0.86rem;
+        margin-bottom: 8px;
+        white-space: normal;
+    }
+    #menopause .severity-buttons {
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+    #menopause .severity-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 8px 2px;
+        font-size: 0.72rem;
+        white-space: nowrap;
+    }
+    #exercises .exercise-selector {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+    }
+    #exercises .exercise-btn {
+        flex: 1 1 0;
+        min-width: 0;
+        padding: 10px 6px;
+        font-size: 0.82rem;
+        line-height: 1.15;
+    }
+    .prediction-card canvas,
+    #trendsChart {
+        display: block;
+        width: 100% !important;
+        height: 180px !important;
+    }
+    .footer-actions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+        max-width: 680px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .footer-actions .btn-secondary,
+    .footer-actions .btn-danger {
+        width: 100%;
+        min-width: 0;
+    }
+}
+
+#about-app ul {
+    list-style-type: none; /* This removes the dots */
+    padding-left: 0;      /* This removes the indentation */
+    margin-left: 0;
+}
+
+.provider-report-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1400;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.provider-report-shell {
+    width: min(1100px, 100%);
+    height: min(92vh, 920px);
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24);
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.provider-report-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.provider-report-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+#providerReportFrame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #fff;
+}
+
+@media (max-width: 768px) {
+    .provider-report-shell {
+        width: 100%;
+        height: 96vh;
+        border-radius: 10px;
+    }
+    .provider-report-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .provider-report-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .provider-report-actions .btn-secondary {
+        width: 100%;
+    }
+}

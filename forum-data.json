@@ -1,0 +1,42 @@
+{
+  "topics": [
+    {
+      "slug": "cycle",
+      "name": "Cycle Tracking",
+      "description": "Share experiences and tips",
+      "createdAt": "2026-02-22T17:04:14.816Z"
+    },
+    {
+      "slug": "menopause",
+      "name": "Menopause Support",
+      "description": "Discuss symptoms and coping strategies",
+      "createdAt": "2026-02-22T17:04:14.816Z"
+    },
+    {
+      "slug": "fitness",
+      "name": "Fitness & Wellness",
+      "description": "Exercise tips and motivation",
+      "createdAt": "2026-02-22T17:04:14.816Z"
+    },
+    {
+      "slug": "mental",
+      "name": "Mental Health",
+      "description": "Support for emotional wellbeing",
+      "createdAt": "2026-02-22T17:04:14.816Z"
+    }
+  ],
+  "postsByTopic": {
+    "cycle": [
+      {
+        "id": "p_1771779854816_1",
+        "title": "Welcome to Cycle Tracking",
+        "content": "Introduce yourself and share your cycle tracking tips.",
+        "author": "Moderator",
+        "date": "2026-02-22T17:04:14.816Z"
+      }
+    ],
+    "menopause": [],
+    "fitness": [],
+    "mental": []
+  }
+}

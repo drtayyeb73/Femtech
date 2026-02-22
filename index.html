@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>AI-Driven Women's Health & Femtech Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>FemHealth Hub</span>
+                </div>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#tracking" class="nav-link active"><i class="fas fa-calendar-alt"></i> Cycle Tracking</a></li>
+                    <li><a href="#symptom-checker" class="nav-link"><i class="fas fa-stethoscope"></i> Symptom Checker</a></li>
+                    <li><a href="#menopause" class="nav-link"><i class="fas fa-fire"></i> Menopause Support</a></li>
+                    <li><a href="#exercises" class="nav-link"><i class="fas fa-running"></i> Exercises</a></li>
+					<li><a href="#community" class="nav-link"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="#nutrition" class="nav-link"><i class="fas fa-apple-alt"></i> Nutrition</a></li>
+                    <li><a href="#trends" class="nav-link"><i class="fas fa-chart-line"></i> Trends</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>Your Personal AI-Driven Women's Health Hub</h2>
+                    <p>Track cycles, monitor symptoms, get personalized insights, and connect with a supportive community - all in one place.</p>
+					
+                    <div class="mode-toggle">
+                        <span>Reproductive Years</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="modeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>Menopause Mode</span>
+                        <button id="themeToggle" class="btn-secondary theme-toggle-btn">
+                            <i class="fas fa-moon"></i> Dark Mode
+                        </button>
+                    </div>
+                    <p id="phaseInsight"></p>
+                    <div class="form-group profile-settings">
+                        <label for="profileName">Your Name</label>
+                        <input type="text" id="profileName" placeholder="Enter your name">
+                        <button id="saveProfileName" class="btn-secondary">Save Name</button>
+                    </div>
+                </div>
+                
+            </section>
+            
+           
+
+            <!-- Cycle Tracking Section -->
+            <section id="tracking" class="section">
+                <h2><i class="fas fa-calendar-alt"></i> Personalized Cycle & Fertility Tracking</h2>
+                <div class="tracking-container">
+                    <div class="tracking-form">
+                        <h3>Track Your Cycle</h3>
+                        <div class="form-group">
+                            <label for="cycleLength">Cycle Length (days)</label>
+                            <input type="number" id="cycleLength" min="20" max="45" value="28">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastPeriod">Last Period Start Date</label>
+                            <input type="date" id="lastPeriod">
+                        </div>
+                        <div class="form-group">
+                            <label for="symptoms">Symptoms</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" class="symptom" value="cramps"> Cramps</label>
+                                <label><input type="checkbox" class="symptom" value="headache"> Headache</label>
+                                <label><input type="checkbox" class="symptom" value="fatigue"> Fatigue</label>
+                                <label><input type="checkbox" class="symptom" value="bloating"> Bloating</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mood">Mood</label>
+                            <select id="mood">
+                                <option value="happy">😊 Happy</option>
+                                <option value="neutral">😐 Neutral</option>
+                                <option value="sad">😔 Sad</option>
+                                <option value="anxious">😰 Anxious</option>
+                                <option value="energetic">😄 Energetic</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="energyLevel">Energy Level: <span id="energyValue">5</span>/10</label>
+                            <input type="range" id="energyLevel" min="1" max="10" value="5">
+                        </div>
+                        <button id="saveTracking" class="btn-primary">Save Today's Data</button>
+                    </div>
+                    
+                    <div class="tracking-display">
+                        <h3>Cycle Overview</h3>
+                        <div class="predictions">
+                            <div class="prediction-card">
+                                <h4>Next Period</h4>
+                                <p id="nextPeriod">Calculating...</p>
+                            </div>
+                            <div class="prediction-card">
+                                <h4>Fertile Window</h4>
+                                <p id="fertileWindow">Calculating...</p>
+                            </div>
+                            <div class="prediction-card">
+                                <h4>Ovulation Day</h4>
+                                <p id="ovulationDay">Calculating...</p>
+                            </div>
+                        </div>
+                        <div class="calendar">
+                            <h4>Cycle Calendar</h4>
+                            <div class="calendar-header">
+                                <button id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                                <h5 id="currentMonth">Month Year</h5>
+                                <button id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Calendar days will be generated by JavaScript -->
+                            </div>
+                            <div class="day-details" id="dayDetails"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Nutrition & BMR Section -->
+            <section id="nutrition" class="section">
+                <h2><i class="fas fa-apple-alt"></i> Nutrition & BMR</h2>
+                <div class="tracking-container">
+                    <div class="tracking-form">
+                        <h3>Calculate Your BMR</h3>
+                        <div class="bmr-core-inputs">
+                            <div class="form-group">
+                                <label for="bmrAge">Age (years)</label>
+                                <input type="number" id="bmrAge" min="10" max="80" value="30">
+                            </div>
+                            <div class="form-group">
+                                <label for="bmrHeight">Height (cm)</label>
+                                <input type="number" id="bmrHeight" min="120" max="210" value="165">
+                            </div>
+                            <div class="form-group">
+                                <label for="bmrWeight">Weight (kg)</label>
+                                <input type="number" id="bmrWeight" min="35" max="180" value="65">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="activityLevel">Activity Level</label>
+                            <select id="activityLevel">
+                                <option value="1.2">Sedentary</option>
+                                <option value="1.375">Lightly Active</option>
+                                <option value="1.55">Moderately Active</option>
+                                <option value="1.725">Very Active</option>
+                            </select>
+                        </div>
+                        <button id="calculateBmr" class="btn-primary">Calculate BMR</button>
+                    </div>
+                    <div class="tracking-display">
+                        <h3>Your Nutrition Insights</h3>
+                        <div class="prediction-card">
+                            <h4>Basal Metabolic Rate</h4>
+                            <p id="bmrValue">Enter details to calculate</p>
+                        </div>
+                        <div class="prediction-card">
+                            <h4>Daily Calorie Target</h4>
+                            <p id="calorieTarget">Calculated after BMR</p>
+                        </div>
+                        <div class="prediction-card">
+                            <h4>Phase-Based Tip</h4>
+                            <p id="nutritionPhaseTip">Tips will appear here</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="trends" class="section">
+                <h2><i class="fas fa-chart-line"></i> Trends</h2>
+                <div class="tracking-container">
+                    <div class="tracking-form">
+                        <h3>Metrics</h3>
+                        <div class="form-group">
+                            <label for="trendsMetric">Select Metric</label>
+                            <select id="trendsMetric">
+                                <option value="energy">Energy Level</option>
+                                <option value="symptomCount">Symptom Count</option>
+                                <option value="hydration">Hydration (Cups)</option>
+                                <option value="supplements">Supplements Taken</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="tracking-display">
+                        <h3>Last 30 Days</h3>
+                        <div class="prediction-card">
+                            <canvas id="trendsChart" height="140"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Symptom Checker Section -->
+            <section id="symptom-checker" class="section">
+                <h2><i class="fas fa-stethoscope"></i> AI Symptom Checker</h2>
+                <div class="symptom-checker-container">
+                    <div class="symptom-input">
+                        <h3>Describe Your Symptoms</h3>
+                        <div class="symptom-buttons">
+                            <button class="symptom-btn" data-symptom="headache">Headache</button>
+                            <button class="symptom-btn" data-symptom="fatigue">Fatigue</button>
+                            <button class="symptom-btn" data-symptom="cramps">Cramps</button>
+                            <button class="symptom-btn" data-symptom="nausea">Nausea</button>
+                            <button class="symptom-btn" data-symptom="dizziness">Dizziness</button>
+                            <button class="symptom-btn" data-symptom="fever">Fever</button>
+                            <button class="symptom-btn" data-symptom="back pain">Back Pain</button>
+                            <button class="symptom-btn" data-symptom="breast tenderness">Breast Tenderness</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="customSymptom">Or type your own symptoms:</label>
+                            <textarea id="customSymptom" placeholder="Describe your symptoms in detail..."></textarea>
+                        </div>
+                        <button id="analyzeSymptoms" class="btn-primary">Analyze Symptoms</button>
+                    </div>
+                    <div class="ai-recommendations">
+                        <h3>AI Recommendations</h3>
+                        <div class="ai-response" id="aiResponse">
+                            <p>Select symptoms or describe how you're feeling to get AI-driven insights and recommendations.</p>
+                        </div>
+                        <div class="recommendation-cards">
+                            <div class="recommendation-card">
+                                <i class="fas fa-heart"></i>
+                                <h4>Self-Care Tips</h4>
+                                <p id="selfCareTips">Waiting for analysis...</p>
+                            </div>
+                            <div class="recommendation-card">
+                                <i class="fas fa-user-md"></i>
+                                <h4>When to See a Doctor</h4>
+                                <p id="doctorAdvice">Waiting for analysis...</p>
+                            </div>
+                            <div class="recommendation-card">
+                                <i class="fas fa-prescription"></i>
+                                <h4>Treatment Options</h4>
+                                <p id="treatmentOptions">Waiting for analysis...</p>
+                            </div>
+                            <div class="recommendation-card">
+                                <i class="fas fa-tint"></i>
+                                <h4>Wellness Signals (Implemented)</h4>
+                                <p id="wellnessSignals">Hydration and supplements are now linked to recommendations.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Menopause Support Section -->
+            <section id="menopause" class="section">
+                <h2><i class="fas fa-fire"></i> Menopause Support</h2>
+                <div class="menopause-container">
+                    <div class="menopause-tracker">
+                        <h3>Symptom Tracker</h3>
+                        <div class="symptom-severity">
+                            <div class="symptom-item">
+                                <label>Hot Flashes</label>
+                                <div class="severity-buttons">
+                                    <button class="severity-btn" data-symptom="hotFlashes" data-severity="0">None</button>
+                                    <button class="severity-btn" data-symptom="hotFlashes" data-severity="1">Mild</button>
+                                    <button class="severity-btn" data-symptom="hotFlashes" data-severity="2">Moderate</button>
+                                    <button class="severity-btn active" data-symptom="hotFlashes" data-severity="3">Severe</button>
+                                </div>
+                            </div>
+                            <div class="symptom-item">
+                                <label>Sleep Quality</label>
+                                <div class="severity-buttons">
+                                    <button class="severity-btn active" data-symptom="sleep" data-severity="0">Poor</button>
+                                    <button class="severity-btn" data-symptom="sleep" data-severity="1">Fair</button>
+                                    <button class="severity-btn" data-symptom="sleep" data-severity="2">Good</button>
+                                    <button class="severity-btn" data-symptom="sleep" data-severity="3">Excellent</button>
+                                </div>
+                            </div>
+                            <div class="symptom-item">
+                                <label>Mood Changes</label>
+                                <div class="severity-buttons">
+                                    <button class="severity-btn" data-symptom="mood" data-severity="0">Stable</button>
+                                    <button class="severity-btn active" data-symptom="mood" data-severity="1">Mild</button>
+                                    <button class="severity-btn" data-symptom="mood" data-severity="2">Moderate</button>
+                                    <button class="severity-btn" data-symptom="mood" data-severity="3">Severe</button>
+                                </div>
+                            </div>
+                            <div class="symptom-item">
+                                <label>Brain Fog</label>
+                                <div class="severity-buttons">
+                                    <button class="severity-btn" data-symptom="brainFog" data-severity="0">None</button>
+                                    <button class="severity-btn active" data-symptom="brainFog" data-severity="1">Mild</button>
+                                    <button class="severity-btn" data-symptom="brainFog" data-severity="2">Moderate</button>
+                                    <button class="severity-btn" data-symptom="brainFog" data-severity="3">Severe</button>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="saveMenopauseData" class="btn-primary">Save Symptoms</button>
+                        <div class="hydration-tracker">
+                            <h3>Hydration Tracker</h3>
+                            <p>Cups today: <span id="cupsCount">0</span></p>
+                            <div class="hydration-actions">
+                                <button id="addCup" class="btn-primary">Add Cup</button>
+                                <button id="resetHydration" class="btn-secondary">Reset Today</button>
+                            </div>
+                        </div>
+                        <div class="supplements-tracker">
+                            <h3>Daily Supplements</h3>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" class="supplement" value="Folic Acid"> Folic Acid</label>
+                                <label><input type="checkbox" class="supplement" value="Magnesium"> Magnesium</label>
+                                <label><input type="checkbox" class="supplement" value="Iron"> Iron</label>
+                                <label><input type="checkbox" class="supplement" value="Omega-3"> Omega-3</label>
+                                <label><input type="checkbox" class="supplement" value="Vitamin D"> Vitamin D</label>
+                            </div>
+                            <button id="saveSupplements" class="btn-primary">Save Supplements</button>
+                        </div>
+                    </div>
+                    <div class="menopause-tips">
+                        <h3>Personalized Tips & Suggestions</h3>
+                        <div class="tips-container" id="menopauseTips">
+                            <div class="tip-card">
+                                <i class="fas fa-temperature-high"></i>
+                                <h4>For Hot Flashes</h4>
+                                <p>Dress in layers, avoid triggers like spicy food and caffeine, and practice deep breathing exercises.</p>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-bed"></i>
+                                <h4>For Better Sleep</h4>
+                                <p>Establish a bedtime routine, keep your bedroom cool, and limit screen time before bed.</p>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-brain"></i>
+                                <h4>For Brain Fog</h4>
+                                <p>Stay mentally active with puzzles, maintain a healthy diet, and ensure adequate hydration.</p>
+                            </div>
+                            <div class="tip-card">
+                                <i class="fas fa-heart"></i>
+                                <h4>For Heart Health</h4>
+                                <p>Regular cardiovascular exercise and a diet rich in omega-3s can support heart health during menopause.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pelvic Floor Exercises Section -->
+            <section id="exercises" class="section">
+                <h2><i class="fas fa-running"></i> Pelvic Floor Exercises</h2>
+                <div class="exercise-container">
+                    <div class="exercise-instructions">
+                        <h3>Guided Exercises</h3>
+                        <div class="exercise-card active" id="kegelExercise">
+                            <h4>Kegel Exercises</h4>
+                            <p>Strengthen your pelvic floor muscles to improve bladder control and sexual health.</p>
+                            <div class="exercise-steps">
+                                <p><strong>Step 1:</strong> Identify the right muscles by trying to stop urination midstream.</p>
+                                <p><strong>Step 2:</strong> Tighten these muscles for 5 seconds, then relax for 5 seconds.</p>
+                                <p><strong>Step 3:</strong> Repeat 10-15 times, 3 times daily.</p>
+                            </div>
+                        </div>
+                        <div class="exercise-card" id="bridgeExercise">
+                            <h4>Bridge Pose</h4>
+                            <p>Strengthens glutes, lower back, and pelvic floor muscles.</p>
+                            <div class="exercise-steps">
+                                <p><strong>Step 1:</strong> Lie on your back with knees bent and feet flat on the floor.</p>
+                                <p><strong>Step 2:</strong> Lift your hips toward the ceiling while squeezing your glutes.</p>
+                                <p><strong>Step 3:</strong> Hold for 10 seconds, then slowly lower down. Repeat 10 times.</p>
+                            </div>
+                        </div>
+                        <div class="exercise-card" id="deepBreathingExercise">
+                            <h4>Deep Breathing</h4>
+                            <p>Supports pelvic floor relaxation and stress reduction through breath control.</p>
+                            <div class="exercise-steps">
+                                <p><strong>Step 1:</strong> Sit or lie comfortably with one hand on your lower belly.</p>
+                                <p><strong>Step 2:</strong> Inhale slowly through your nose for 4 seconds, expanding the belly.</p>
+                                <p><strong>Step 3:</strong> Exhale gently for 6 seconds and relax the pelvic floor. Repeat 10 cycles.</p>
+                            </div>
+                        </div>
+                        <div class="exercise-selector">
+                            <button class="exercise-btn active" data-exercise="kegel">Kegels</button>
+                            <button class="exercise-btn" data-exercise="bridge">Bridge Pose</button>
+                            <button class="exercise-btn" data-exercise="deepBreathing">Deep Breathing</button>
+                        </div>
+                    </div>
+                    <div class="exercise-monitor">
+                        <h3>Exercise Monitor</h3>
+                        <div class="sensor-status">
+                            <p id="sensorStatus"><i class="fas fa-check-circle"></i> Motion sensors available</p>
+                            <p id="movementFeedback">Ready to start exercise</p>
+                            <p id="motionLevel">Motion level: 0.00</p>
+                        </div>
+                        <div class="exercise-visual">
+                            <div class="pelvic-visual" id="pelvicVisual">
+                                <div class="muscle-group" id="muscleGroup"></div>
+                                <div class="contraction-indicator" id="contractionIndicator"></div>
+                            </div>
+                            <div class="exercise-timer">
+                                <p>Hold Time: <span id="holdTimer">0</span>s</p>
+                                <p>Repetitions: <span id="repCounter">0</span></p>
+                            </div>
+                        </div>
+                        <div class="exercise-controls">
+                            <button id="startExercise" class="btn-primary">Start Exercise</button>
+                            <button id="resetExercise" class="btn-secondary">Reset</button>
+                            <button id="calibrateExercise" class="btn-secondary">Calibrate</button>
+                        </div>
+                        <div class="fallback-instructions" id="fallbackInstructions">
+                            <p><i class="fas fa-info-circle"></i> <strong>Device Not Supported?</strong> Manually time your contractions for 5 seconds each, followed by 5 seconds of relaxation. Aim for 10-15 repetitions.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+            <!-- Community Forum Section -->
+            <section id="community" class="section">
+                <h2><i class="fas fa-users"></i> Community Forum</h2>
+                 <div class="forum-connect">
+                   <input
+                    type="url"
+                    id="forumUrlInput"
+                     placeholder="Enter HTTPS forum URL (embed supported for pregnancyarchive.com)"/>
+                    <small class="forum-help">Other forums may require opening in a new tab due to site embedding restrictions.</small>
+
+                 <div class="forum-actions">
+                  <button id="saveForumUrl" class="btn-secondary">Connect Forum</button>
+                  <button id="clearForumUrl" class="btn-secondary">Disconnect</button>
+                 </div>
+                </div>
+                <div class="forum-status" id="forumStatus"></div>
+                <div class="forum-embed" id="forumEmbed" style="display:none;">
+                    <div class="forum-actions">
+                        <button id="openForumExternal" class="btn-secondary">Open in New Tab</button>
+                    </div>
+                    <iframe id="forumIframe" src="" title="Community Forum" style="width:100%;min-height:600px;border:0;border-radius:12px;"></iframe>
+                </div>
+                <div class="forum-container">
+                    <div class="forum-topics">
+                        <h3>Discussion Topics</h3>
+                        <div class="topic-list">
+                            <div class="topic-item active" data-topic="cycle" role="button" tabindex="0" aria-pressed="true">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div>
+                                    <h4>Cycle Tracking</h4>
+                                    <p>Share experiences and tips</p>
+                                </div>
+                            </div>
+                            <div class="topic-item" data-topic="menopause" role="button" tabindex="0" aria-pressed="false">
+                                <i class="fas fa-fire"></i>
+                                <div>
+                                    <h4>Menopause Support</h4>
+                                    <p>Discuss symptoms and coping strategies</p>
+                                </div>
+                            </div>
+                            <div class="topic-item" data-topic="fitness" role="button" tabindex="0" aria-pressed="false">
+                                <i class="fas fa-running"></i>
+                                <div>
+                                    <h4>Fitness & Wellness</h4>
+                                    <p>Exercise tips and motivation</p>
+                                </div>
+                            </div>
+                            <div class="topic-item" data-topic="mental" role="button" tabindex="0" aria-pressed="false">
+                                <i class="fas fa-brain"></i>
+                                <div>
+                                    <h4>Mental Health</h4>
+                                    <p>Support for emotional wellbeing</p>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="newTopicBtn" class="btn-secondary">+ New Topic</button>
+                        <div id="newTopicForm" class="new-topic-form" style="display:none;">
+                            <div class="form-group">
+                                <input type="text" id="newTopicName" placeholder="Topic name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="newTopicDescription" placeholder="Topic description">
+                            </div>
+                            <div class="forum-actions">
+                                <button id="createTopicConfirm" class="btn-primary">Create Topic</button>
+                                <button id="createTopicCancel" class="btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="forum-posts">
+                        <h3 id="currentTopicTitle">Cycle Tracking Discussions</h3>
+                        <div class="posts-container" id="postsContainer">
+                            <!-- Posts will be loaded here -->
+                        </div>
+                        <div class="new-post">
+                            <h4>Add a Post</h4>
+                            <div class="form-group">
+                                <input type="text" id="postTitle" placeholder="Post title">
+                            </div>
+                            <div class="form-group">
+                                <textarea id="postContent" placeholder="Share your thoughts..."></textarea>
+                            </div>
+                            <button id="submitPost" class="btn-primary">Post to Community</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="about-app" class="section sr-source">
+                <h2>About Application</h2>
+                <p>AI-Driven Women's Health and Femtech Hub is a mobile-first wellness application. It combines cycle intelligence, symptom support, menopause workflows, and sensor-assisted exercise guidance in one local-first app.</p>
+
+                <h3>Feature 1: Personalized Cycle and Fertility Tracking</h3>
+                <ul>
+                    <li>Inputs captured: cycle length, last period date, symptoms, mood, and energy level.</li>
+                    <li>Predictions shown: Next Period, Fertile Window, and Ovulation Day.</li>
+                    <li>Calendar view marks cycle phases and stores daily entries locally.</li>
+                    <li>Day details panel combines cycle logs with menopause, hydration, and supplement records for that date.</li>
+                </ul>
+
+                <h3>Feature 2: AI Symptom Checker (Rule-Based)</h3>
+                <ul>
+                    <li>Users can select predefined symptoms and add free-text symptoms.</li>
+                    <li>Engine uses weighted rule logic for summary, self-care, doctor priority, and treatment guidance text.</li>
+                    <li>Cycle phase and menopause mode influence recommendation language.</li>
+                    <li>Medical disclaimer is explicit: this is wellness guidance, not diagnosis.</li>
+                </ul>
+
+                <h3>Feature 3: Menopause Support Mode</h3>
+                <ul>
+                    <li>Tracks Hot Flashes, Sleep Quality, Mood Changes, and Brain Fog severity.</li>
+                    <li>Generates personalized menopause tips based on severity combinations.</li>
+                    <li>Mode toggle updates app context between reproductive and menopause workflows.</li>
+                </ul>
+
+                <h3>Feature 4: Pelvic Floor Exercises with Sensor Support</h3>
+                <ul>
+                    <li>Exercises: Kegels, Bridge Pose, and Deep Breathing.</li>
+                    <li>Motion support includes permission handling, live motion signal, and calibration per exercise.</li>
+                    <li>Distinct visual systems are implemented for each exercise with unique color palette and animation behavior.</li>
+                    <li>Fallback manual guidance remains available when device sensors are unsupported or permission is denied.</li>
+                </ul>
+
+                <h3>Feature 5: Hydration and Supplements Integration</h3>
+                <ul>
+                    <li>Hydration tracker records cups per day with Add/Reset controls.</li>
+                    <li>Daily supplement logging supports Folic Acid, Magnesium, Iron, Omega-3, and Vitamin D.</li>
+                    <li>Wellness Signals (Implemented) uses hydration + supplement logs in recommendation output.</li>
+                    <li>Examples: low hydration warning, iron support hint for heavy bleeding/fatigue patterns, magnesium hint for mood/luteal context.</li>
+                </ul>
+
+                <h3>Feature 6: Nutrition and BMR</h3>
+                <ul>
+                    <li>BMR calculator uses age, height, weight, and activity level.</li>
+                    <li>Outputs BMR and daily calorie target.</li>
+                    <li>Phase-aware nutrition tip updates based on detected cycle phase.</li>
+                </ul>
+
+                <h3>Feature 7: Trends Dashboard</h3>
+                <ul>
+                    <li>Metrics available: Energy Level, Symptom Count, Hydration (Cups), Supplements Taken.</li>
+                    <li>Graph is optimized for readability with metric-specific colors, gradients, improved tooltips, and mobile-friendly axes.</li>
+                    <li>Supplements metric tooltip shows supplement names logged for each day.</li>
+                </ul>
+
+                <h3>Feature 8: Community Forum</h3>
+                <ul>
+                    <li>Local topic-based community posting (title + content) with topic creation support.</li>
+                    <li>Optional external forum integration via URL with fallback open-in-new-tab behavior.</li>
+                </ul>
+
+                <h3>Feature 9: Privacy and Security</h3>
+                <ul>
+                    <li>All core app data persists locally in localStorage.</li>
+                    <li>Clear All Data button removes local app records and resets state.</li>
+                    <li>Multiple render paths were hardened to reduce XSS risk by avoiding unsafe HTML injection.</li>
+                </ul>
+
+                <h3>Feature 10: Provider PDF Report Export</h3>
+                <ul>
+                    <li>Export Provider Report (PDF) button compiles key health logs into a clinician-friendly summary.</li>
+                    <li>Includes cycle/fertility overview, 30-day trends summary, symptom patterns, menopause scores, hydration, and supplements.</li>
+                    <li>Includes 14-day daily log table for quick consultation review.</li>
+                    <li>Uses print-ready layout so users can save as PDF from Android/Chrome print dialog.</li>
+                </ul>
+
+                <h3>Safety Notice</h3>
+                <p>This application is for education and wellness support only. It is not a substitute for professional diagnosis, treatment, or emergency care.</p>
+            </section>
+            
+            <section id="about-us" class="section sr-source">
+                <h2>🚀 About Us — Ahmad Soft</h2>
+                <p>Ahmad Soft is a forward-thinking software development company focused on building innovative, high-performance digital solutions that blend technology, creativity, and user-centered design. We specialize in transforming bold ideas into scalable, reliable, and impactful software products.</p>
+                <p>At Ahmad Soft, we believe software should do more than just function—it should solve real problems, inspire users, and drive measurable results. From web and mobile applications to custom software systems, we deliver solutions engineered for performance, security, and growth.</p>
+                <h3>💡 Our Mission</h3>
+                <p>To empower individuals and businesses through smart, efficient, and future-ready software, crafted with precision and purpose.</p>
+                <h3>🧠 What We Do</h3>
+                <ul>
+                    <li>💻 Web & App Development – Modern, responsive, and scalable applications</li>
+                    <li>⚙️ Custom Software Solutions – Tailored systems for unique business needs</li>
+                    <li>🎨 UI/UX Design – Clean, intuitive, and user-focused experiences</li>
+                    <li>📊 Performance & Optimization – Fast, secure, and reliable products</li>
+                    <li>🚀 Product Innovation – Turning concepts into market-ready solutions</li>
+                </ul>
+                <h3>🔥 Why Choose Ahmad Soft?</h3>
+                <ul>
+                    <li>✅ Quality-driven development</li>
+                    <li>🧩 Strong problem-solving mindset</li>
+                    <li>⚡ Modern technologies and best practices</li>
+                    <li>🤝 Transparent communication and collaboration</li>
+                    <li>📈 Long-term scalability and support</li>
+                </ul>
+                <h3>🌍 Our Vision</h3>
+                <p>To become a trusted technology partner known for innovation, reliability, and excellence, helping shape the future of digital experiences.</p>
+                <p>🌐 Visit: <a href="https://ahmadsoft.vercel.app" target="_blank" rel="noopener">ahmadsoft.vercel.app</a></p>
+                <p>📧 Contact: <a href="mailto:drtayyeb@yahoo.com">drtayyeb@yahoo.com</a></p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>AI-Driven Women's Health & Femtech Hub</p>
+            <p>This application is for educational purposes only and does not provide medical advice. Always consult with a healthcare professional for medical concerns.</p>
+            <div class="footer-links">
+                <span>Created by Ahmad Soft</span>
+            </div>
+            <div class="footer-actions">
+                <button id="openAboutApp" class="btn-secondary">🌸 About Application</button>
+                <button id="openAboutUs" class="btn-secondary">🚀 About Us — Ahmad Soft</button>
+                <button id="exportProviderPdf" class="btn-secondary">Export Provider Report (PDF)</button>
+                <button id="clearAllData" class="btn-secondary btn-danger">Clear All Data</button>
+            </div>
+            
+    <div id="pageOverlay" class="page-overlay hidden">
+        <div class="page-frame">
+            <div class="page-header">
+                <h3 id="pageTitle"></h3>
+                <button id="closeOverlay" class="btn-secondary">Close</button>
+            </div>
+            <div id="pageContent" class="page-content"></div>
+        </div>
+    </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
