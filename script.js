@@ -2439,9 +2439,106 @@ async function loadPostsForTopic(topic) {
         contentP.textContent = String(post.content || '');
         contentWrap.appendChild(contentP);
 
+        const postActions = document.createElement('div');
+        postActions.className = 'post-actions';
+        const replyBtn = document.createElement('button');
+        replyBtn.className = 'btn-secondary reply-btn';
+        replyBtn.type = 'button';
+        replyBtn.textContent = 'Reply';
+        if (!post.id) replyBtn.disabled = true;
+        postActions.appendChild(replyBtn);
+
+        const replyForm = document.createElement('div');
+        replyForm.className = 'reply-form';
+        replyForm.style.display = 'none';
+        const replyInput = document.createElement('textarea');
+        replyInput.placeholder = 'Write a reply...';
+        const replyActions = document.createElement('div');
+        replyActions.className = 'reply-actions';
+        const sendReplyBtn = document.createElement('button');
+        sendReplyBtn.className = 'btn-primary';
+        sendReplyBtn.type = 'button';
+        sendReplyBtn.textContent = 'Send Reply';
+        const cancelReplyBtn = document.createElement('button');
+        cancelReplyBtn.className = 'btn-secondary';
+        cancelReplyBtn.type = 'button';
+        cancelReplyBtn.textContent = 'Cancel';
+        replyActions.appendChild(sendReplyBtn);
+        replyActions.appendChild(cancelReplyBtn);
+        replyForm.appendChild(replyInput);
+        replyForm.appendChild(replyActions);
+
+        const repliesWrap = document.createElement('div');
+        repliesWrap.className = 'post-replies';
+        const replies = Array.isArray(post.replies) ? post.replies : [];
+        if (replies.length) {
+            const repliesTitle = document.createElement('h5');
+            repliesTitle.textContent = replies.length === 1 ? '1 Reply' : `${replies.length} Replies`;
+            repliesWrap.appendChild(repliesTitle);
+            replies.forEach(reply => {
+                const replyCard = document.createElement('div');
+                replyCard.className = 'reply-item';
+                const replyHeader = document.createElement('div');
+                replyHeader.className = 'reply-header';
+                const replyAuthor = document.createElement('span');
+                replyAuthor.textContent = String(reply.author || 'Unknown');
+                const replyDate = document.createElement('span');
+                replyDate.textContent = formatDate(new Date(reply.date));
+                replyHeader.appendChild(replyAuthor);
+                replyHeader.appendChild(replyDate);
+                const replyBody = document.createElement('p');
+                replyBody.textContent = String(reply.content || '');
+                replyCard.appendChild(replyHeader);
+                replyCard.appendChild(replyBody);
+                repliesWrap.appendChild(replyCard);
+            });
+        }
+
+        replyBtn.addEventListener('click', function() {
+            replyForm.style.display = 'block';
+            replyInput.focus();
+        });
+        cancelReplyBtn.addEventListener('click', function() {
+            replyInput.value = '';
+            replyForm.style.display = 'none';
+        });
+        sendReplyBtn.addEventListener('click', function() {
+            const replyContent = replyInput.value.trim();
+            if (!replyContent) {
+                showToast('Please enter a reply.');
+                return;
+            }
+            if (replyContent.length > 1500) {
+                showToast('Reply is too long (max 1500 characters).');
+                return;
+            }
+            if (!post.id) {
+                showToast('This post cannot be replied to.');
+                return;
+            }
+            sendReplyBtn.disabled = true;
+            void forumApi(`/topics/${encodeURIComponent(topic)}/posts/${encodeURIComponent(post.id)}/replies`, {
+                method: 'POST',
+                body: {
+                    content: replyContent,
+                    author: getUserName() || 'You'
+                }
+            }).then(function() {
+                showToast('Reply added.');
+                return loadPostsForTopic(topic);
+            }).catch(function(e) {
+                showToast(e?.message || 'Could not send reply.');
+            }).finally(function() {
+                sendReplyBtn.disabled = false;
+            });
+        });
+
         postElement.appendChild(postHeader);
         postElement.appendChild(title);
         postElement.appendChild(contentWrap);
+        postElement.appendChild(postActions);
+        postElement.appendChild(replyForm);
+        postElement.appendChild(repliesWrap);
         postsContainer.appendChild(postElement);
     });
 }

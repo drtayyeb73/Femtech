@@ -1118,6 +1118,71 @@ input:checked + .toggle-slider:before {
     margin: 0;
 }
 
+.post-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+.reply-btn {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.reply-form {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: #fff;
+}
+
+.reply-form textarea {
+    width: 100%;
+    min-height: 70px;
+    resize: vertical;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+}
+
+.reply-actions {
+    margin-top: 8px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.post-replies {
+    margin-top: 12px;
+}
+
+.post-replies h5 {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.reply-item {
+    padding: 10px;
+    border-left: 3px solid var(--secondary-color);
+    background: #fff;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.reply-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-bottom: 4px;
+}
+
+.reply-item p {
+    margin: 0;
+}
+
 .forum-connect {
     display: flex;
 	flex-direction: column;

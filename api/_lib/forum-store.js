@@ -113,7 +113,8 @@ async function createPost(slugInput, { title, content, author }) {
         title: postTitle,
         content: postContent,
         author: postAuthor.slice(0, 60),
-        date: nowIso()
+        date: nowIso(),
+        replies: []
     };
     const key = postsKey(slug);
     const existing = await kv.get(key);
@@ -122,9 +123,51 @@ async function createPost(slugInput, { title, content, author }) {
     return post;
 }
 
+async function createReply(slugInput, postIdInput, { content, author }) {
+    const slug = normalizeSlug(slugInput);
+    const postId = String(postIdInput || '').trim();
+    const replyContent = String(content || '').trim();
+    const replyAuthor = String(author || 'Anonymous').trim() || 'Anonymous';
+
+    const topics = await ensureTopics();
+    if (!topics.some(t => t.slug === slug)) {
+        throw Object.assign(new Error('Topic not found.'), { status: 404 });
+    }
+    if (!postId) {
+        throw Object.assign(new Error('Post not found.'), { status: 404 });
+    }
+    if (!replyContent) {
+        throw Object.assign(new Error('Reply content is required.'), { status: 400 });
+    }
+    if (replyContent.length > 1500) {
+        throw Object.assign(new Error('Reply is too long (max 1500 characters).'), { status: 400 });
+    }
+
+    const key = postsKey(slug);
+    const existing = await kv.get(key);
+    const posts = Array.isArray(existing) ? [...existing] : [];
+    const idx = posts.findIndex(p => p && p.id === postId);
+    if (idx < 0) {
+        throw Object.assign(new Error('Post not found.'), { status: 404 });
+    }
+    const currentPost = posts[idx];
+    const replies = Array.isArray(currentPost.replies) ? [...currentPost.replies] : [];
+    const reply = {
+        id: `r_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        content: replyContent,
+        author: replyAuthor.slice(0, 60),
+        date: nowIso()
+    };
+    replies.unshift(reply);
+    posts[idx] = { ...currentPost, replies: replies.slice(0, 500) };
+    await kv.set(key, posts.slice(0, 2000));
+    return reply;
+}
+
 module.exports = {
     getTopics,
     createTopic,
     getPosts,
-    createPost
+    createPost,
+    createReply
 };

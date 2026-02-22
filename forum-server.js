@@ -208,12 +208,58 @@ const server = http.createServer(async (req, res) => {
                 title,
                 content,
                 author: safeAuthor,
-                date: nowIso()
+                date: nowIso(),
+                replies: []
             };
             if (!Array.isArray(db.postsByTopic[slug])) db.postsByTopic[slug] = [];
             db.postsByTopic[slug].unshift(post);
             writeDb(db);
             send(res, 201, { post });
+            return;
+        }
+
+        const repliesPath = pathname.match(/^\/api\/topics\/([^/]+)\/posts\/([^/]+)\/replies$/);
+        if (repliesPath && req.method === 'POST') {
+            const slug = normalizeSlug(decodeURIComponent(repliesPath[1] || ''));
+            const postId = String(decodeURIComponent(repliesPath[2] || '')).trim();
+            const db = readDb();
+            const topic = db.topics.find(t => t.slug === slug);
+            if (!topic) {
+                send(res, 404, { error: 'Topic not found.' });
+                return;
+            }
+            if (!postId) {
+                send(res, 404, { error: 'Post not found.' });
+                return;
+            }
+            const body = await readBody(req);
+            const content = String(body?.content || '').trim();
+            const author = String(body?.author || 'Anonymous').trim() || 'Anonymous';
+            if (!content) {
+                send(res, 400, { error: 'Reply content is required.' });
+                return;
+            }
+            if (content.length > 1500) {
+                send(res, 400, { error: 'Reply is too long (max 1500 characters).' });
+                return;
+            }
+            const posts = Array.isArray(db.postsByTopic[slug]) ? db.postsByTopic[slug] : [];
+            const post = posts.find(p => p && p.id === postId);
+            if (!post) {
+                send(res, 404, { error: 'Post not found.' });
+                return;
+            }
+            if (!Array.isArray(post.replies)) post.replies = [];
+            const reply = {
+                id: `r_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+                content,
+                author: author.slice(0, 60),
+                date: nowIso()
+            };
+            post.replies.unshift(reply);
+            if (post.replies.length > 500) post.replies = post.replies.slice(0, 500);
+            writeDb(db);
+            send(res, 201, { reply });
             return;
         }
 

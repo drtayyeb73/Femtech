@@ -30,6 +30,7 @@ location.reload();
 - `POST /api/topics`
 - `GET /api/topics/:slug/posts`
 - `POST /api/topics/:slug/posts`
+- `POST /api/topics/:slug/posts/:postId/replies`
 
 ## Local development options
 
