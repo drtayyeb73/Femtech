@@ -2302,7 +2302,16 @@ function openProviderPdfUri(uri) {
     return opened;
 }
 
-const FORUM_API_BASE = localStorage.getItem('femtechForumApiBase') || 'http://localhost:8787/api';
+function getDefaultForumApiBase() {
+    const configured = localStorage.getItem('femtechForumApiBase');
+    if (configured) return configured.replace(/\/+$/, '');
+    if (typeof window !== 'undefined' && window.location && /^https?:$/i.test(window.location.protocol)) {
+        return `${window.location.origin.replace(/\/+$/, '')}/api`;
+    }
+    return 'http://localhost:8787/api';
+}
+
+const FORUM_API_BASE = getDefaultForumApiBase();
 
 async function forumApi(path, options = {}) {
     const reqOptions = {

@@ -1,34 +1,27 @@
 # Online Forum Setup
 
-This app now uses an online forum API instead of local-only post storage.
+This app now supports Vercel API routes with persistent storage via Vercel KV.
 
-## Run locally
+## Vercel production setup
 
-1. Open a terminal in this project folder.
-2. Start the forum API:
+1. In Vercel dashboard, open your project `Settings`.
+2. Go to `Storage` -> `Create Database` -> choose `KV`.
+3. Connect that KV database to this project.
+4. Redeploy the project.
 
-```powershell
-node forum-server.js
-```
+When KV is connected, Vercel injects needed environment variables automatically.
 
-3. Open `index.html` in your browser.
+## Default API behavior
 
-The frontend calls `http://localhost:8787/api` by default.
+- In deployed environments, the app uses same-origin API: `/api`.
+- Local override is still possible with `localStorage` key `femtechForumApiBase`.
 
 ## API base override (optional)
-
-If you deploy the API to another host, set this once in browser console:
 
 ```js
 localStorage.setItem('femtechForumApiBase', 'https://your-domain.com/api');
 location.reload();
 ```
-
-## Deploy
-
-- Deploy `forum-server.js` on any Node.js host (VM, VPS, Render, Railway, etc.).
-- Keep `forum-data.json` writable by the Node process.
-- Open port `8787` or map your platform port to the server.
 
 ## Endpoints
 
@@ -37,3 +30,24 @@ location.reload();
 - `POST /api/topics`
 - `GET /api/topics/:slug/posts`
 - `POST /api/topics/:slug/posts`
+
+## Local development options
+
+1. Quick local backend (file-based):
+
+```powershell
+node forum-server.js
+```
+
+Then use:
+
+```js
+localStorage.setItem('femtechForumApiBase', 'http://localhost:8787/api');
+location.reload();
+```
+
+2. Vercel local dev (KV-backed) using Vercel CLI:
+
+```powershell
+vercel dev
+```
