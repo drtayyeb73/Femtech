@@ -2311,6 +2311,145 @@ function getDefaultForumApiBase() {
     return 'http://localhost:8787/api';
 }
 
+const LOCAL_FORUM_TOPICS_KEY = 'femtechLocalForumTopicsV1';
+const LOCAL_FORUM_POSTS_KEY = 'femtechLocalForumPostsByTopicV1';
+let hasShownLocalForumFallbackNotice = false;
+
+function getDefaultForumTopics() {
+    const createdAt = new Date().toISOString();
+    return [
+        { slug: 'cycle', name: 'Cycle Tracking', description: 'Share experiences and tips', createdAt },
+        { slug: 'menopause', name: 'Menopause Support', description: 'Discuss symptoms and coping strategies', createdAt },
+        { slug: 'fitness', name: 'Fitness & Wellness', description: 'Exercise tips and motivation', createdAt },
+        { slug: 'mental', name: 'Mental Health', description: 'Support for emotional wellbeing', createdAt }
+    ];
+}
+
+function getLocalForumState() {
+    let topics = [];
+    let postsByTopic = {};
+    try {
+        const rawTopics = localStorage.getItem(LOCAL_FORUM_TOPICS_KEY);
+        const parsedTopics = rawTopics ? JSON.parse(rawTopics) : null;
+        topics = Array.isArray(parsedTopics) ? parsedTopics : [];
+    } catch (_) {
+        topics = [];
+    }
+    try {
+        const rawPosts = localStorage.getItem(LOCAL_FORUM_POSTS_KEY);
+        const parsedPosts = rawPosts ? JSON.parse(rawPosts) : null;
+        postsByTopic = parsedPosts && typeof parsedPosts === 'object' ? parsedPosts : {};
+    } catch (_) {
+        postsByTopic = {};
+    }
+    if (!topics.length) {
+        topics = getDefaultForumTopics();
+    }
+    return { topics, postsByTopic };
+}
+
+function saveLocalForumState(state) {
+    localStorage.setItem(LOCAL_FORUM_TOPICS_KEY, JSON.stringify(state.topics || []));
+    localStorage.setItem(LOCAL_FORUM_POSTS_KEY, JSON.stringify(state.postsByTopic || {}));
+}
+
+function ensureLocalForumFallbackNotice() {
+    if (hasShownLocalForumFallbackNotice) return;
+    hasShownLocalForumFallbackNotice = true;
+    showToast('Online forum is unavailable. Using local forum mode on this device.');
+}
+
+function sortPostsByDateDesc(posts) {
+    return [...posts].sort((a, b) => new Date(b?.date || 0).getTime() - new Date(a?.date || 0).getTime());
+}
+
+function localForumApi(path, options = {}) {
+    const method = String(options?.method || 'GET').toUpperCase();
+    const state = getLocalForumState();
+    const body = options?.body || {};
+
+    if (method === 'GET' && path === '/topics') {
+        saveLocalForumState(state);
+        return { topics: state.topics };
+    }
+
+    if (method === 'POST' && path === '/topics') {
+        const name = String(body?.name || '').trim();
+        const description = String(body?.description || '').trim();
+        const slug = normalizeTopicSlug(body?.slug || name);
+        if (!name || name.length < 3) throw new Error('Topic name should be at least 3 characters.');
+        if (!slug) throw new Error('Topic name is invalid.');
+        if (name.length > 60) throw new Error('Topic name is too long (max 60 characters).');
+        if (description.length > 180) throw new Error('Topic description is too long (max 180 characters).');
+        if (state.topics.some(t => t?.slug === slug)) throw new Error('A topic with this name already exists.');
+        const topic = { slug, name, description, createdAt: new Date().toISOString() };
+        state.topics.push(topic);
+        if (!Array.isArray(state.postsByTopic[slug])) state.postsByTopic[slug] = [];
+        saveLocalForumState(state);
+        return { topic };
+    }
+
+    const postsPath = path.match(/^\/topics\/([^/]+)\/posts$/);
+    if (postsPath && method === 'GET') {
+        const slug = normalizeTopicSlug(decodeURIComponent(postsPath[1] || ''));
+        if (!slug || !state.topics.some(t => t?.slug === slug)) throw new Error('Topic not found.');
+        const posts = Array.isArray(state.postsByTopic[slug]) ? state.postsByTopic[slug] : [];
+        return { posts: sortPostsByDateDesc(posts) };
+    }
+
+    if (postsPath && method === 'POST') {
+        const slug = normalizeTopicSlug(decodeURIComponent(postsPath[1] || ''));
+        const title = String(body?.title || '').trim();
+        const content = String(body?.content || '').trim();
+        const author = String(body?.author || 'Anonymous').trim() || 'Anonymous';
+        if (!slug || !state.topics.some(t => t?.slug === slug)) throw new Error('Topic not found.');
+        if (!title || !content) throw new Error('Title and content are required.');
+        if (title.length > 120) throw new Error('Post title is too long (max 120 characters).');
+        if (content.length > 3000) throw new Error('Post content is too long (max 3000 characters).');
+        const post = {
+            id: `p_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            title,
+            content,
+            author: author.slice(0, 60),
+            date: new Date().toISOString(),
+            replies: []
+        };
+        if (!Array.isArray(state.postsByTopic[slug])) state.postsByTopic[slug] = [];
+        state.postsByTopic[slug].unshift(post);
+        state.postsByTopic[slug] = state.postsByTopic[slug].slice(0, 2000);
+        saveLocalForumState(state);
+        return { post };
+    }
+
+    const repliesPath = path.match(/^\/topics\/([^/]+)\/posts\/([^/]+)\/replies$/);
+    if (repliesPath && method === 'POST') {
+        const slug = normalizeTopicSlug(decodeURIComponent(repliesPath[1] || ''));
+        const postId = String(decodeURIComponent(repliesPath[2] || '')).trim();
+        const content = String(body?.content || '').trim();
+        const author = String(body?.author || 'Anonymous').trim() || 'Anonymous';
+        if (!slug || !state.topics.some(t => t?.slug === slug)) throw new Error('Topic not found.');
+        if (!postId) throw new Error('Post not found.');
+        if (!content) throw new Error('Reply content is required.');
+        if (content.length > 1500) throw new Error('Reply is too long (max 1500 characters).');
+        const posts = Array.isArray(state.postsByTopic[slug]) ? state.postsByTopic[slug] : [];
+        const targetPost = posts.find(p => p && p.id === postId);
+        if (!targetPost) throw new Error('Post not found.');
+        if (!Array.isArray(targetPost.replies)) targetPost.replies = [];
+        const reply = {
+            id: `r_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+            content,
+            author: author.slice(0, 60),
+            date: new Date().toISOString()
+        };
+        targetPost.replies.unshift(reply);
+        targetPost.replies = targetPost.replies.slice(0, 500);
+        saveLocalForumState(state);
+        return { reply };
+    }
+
+    throw new Error('Forum endpoint unavailable.');
+}
+
 function getForumApiCandidates() {
     const list = [];
     const configured = localStorage.getItem('femtechForumApiBase');
@@ -2385,7 +2524,12 @@ async function forumApi(path, options = {}) {
         }
     }
 
-    throw lastError || new Error('Forum server is unavailable.');
+    ensureLocalForumFallbackNotice();
+    try {
+        return localForumApi(path, options);
+    } catch (fallbackError) {
+        throw fallbackError || lastError || new Error('Forum server is unavailable.');
+    }
 }
 
 function createTopicItemElement(topic, isActive) {
@@ -2440,12 +2584,12 @@ async function refreshForumTopics(preferredTopic) {
 async function loadPostsForTopic(topic) {
     const postsContainer = document.getElementById('postsContainer');
     const topicTitle = document.getElementById('currentTopicTitle');
-    if (!postsContainer || !topicTitle) return;
+    if (!postsContainer || !topicTitle) return false;
 
     if (!topic) {
         topicTitle.textContent = 'Community Discussions';
         postsContainer.innerHTML = '';
-        return;
+        return true;
     }
 
     const topicNames = {
@@ -2467,7 +2611,7 @@ async function loadPostsForTopic(topic) {
     } catch (e) {
         postsContainer.innerHTML = '<div class="post">Unable to load online posts right now.</div>';
         showToast(e?.message || 'Forum server is unavailable.');
-        return;
+        return false;
     }
 
     postsContainer.innerHTML = '';
@@ -2476,7 +2620,7 @@ async function loadPostsForTopic(topic) {
         empty.className = 'post';
         empty.textContent = 'No posts yet. Be the first to post.';
         postsContainer.appendChild(empty);
-        return;
+        return true;
     }
     posts.forEach(post => {
         const postElement = document.createElement('div');
@@ -2601,6 +2745,7 @@ async function loadPostsForTopic(topic) {
         postElement.appendChild(repliesWrap);
         postsContainer.appendChild(postElement);
     });
+    return true;
 }
 
 async function submitPost() {
@@ -2644,10 +2789,10 @@ async function submitPost() {
     document.getElementById('postTitle').value = '';
     document.getElementById('postContent').value = '';
     
-    await loadPostsForTopic(activeTopic);
-    
-    // Show success message
-    showToast('Your post has been shared with the community!');
+    const refreshed = await loadPostsForTopic(activeTopic);
+    if (refreshed) {
+        showToast('Your post has been shared with the community!');
+    }
 }
 
 async function createNewTopic(topicNameInput, topicDescriptionInput) {
