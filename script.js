@@ -2303,6 +2303,8 @@ function openProviderPdfUri(uri) {
 }
 
 function getDefaultForumApiBase() {
+    const globalConfigured = typeof window !== 'undefined' ? window.FEMTECH_FORUM_API_BASE : '';
+    if (globalConfigured) return String(globalConfigured).trim().replace(/\/+$/, '');
     const configured = localStorage.getItem('femtechForumApiBase');
     if (configured) return configured.replace(/\/+$/, '');
     if (typeof window !== 'undefined' && window.location && /^https?:$/i.test(window.location.protocol)) {
@@ -2325,6 +2327,43 @@ function getDefaultForumTopics() {
     ];
 }
 
+function getDefaultForumPostsByTopic() {
+    const now = Date.now();
+    const iso = offsetMs => new Date(now - offsetMs).toISOString();
+    return {
+        cycle: [
+            {
+                id: `p_seed_cycle_1_${now}`,
+                title: 'Welcome to Cycle Tracking',
+                content: 'Introduce yourself and share your cycle tracking tips.',
+                author: 'Moderator',
+                date: iso(4 * 60 * 60 * 1000),
+                replies: []
+            },
+            {
+                id: `p_seed_cycle_2_${now}`,
+                title: 'Best apps for cycle tracking',
+                content: 'What tools do you use for tracking cycles and symptoms?',
+                author: 'Community',
+                date: iso(2 * 60 * 60 * 1000),
+                replies: []
+            }
+        ],
+        menopause: [
+            {
+                id: `p_seed_menopause_1_${now}`,
+                title: 'Managing hot flashes at work',
+                content: 'Share practical tips that help during office hours.',
+                author: 'Community',
+                date: iso(3 * 60 * 60 * 1000),
+                replies: []
+            }
+        ],
+        fitness: [],
+        mental: []
+    };
+}
+
 function getLocalForumState() {
     let topics = [];
     let postsByTopic = {};
@@ -2345,6 +2384,15 @@ function getLocalForumState() {
     if (!topics.length) {
         topics = getDefaultForumTopics();
     }
+    const hasAnySavedPosts = postsByTopic && typeof postsByTopic === 'object' && Object.values(postsByTopic).some(posts => Array.isArray(posts) && posts.length > 0);
+    if (!hasAnySavedPosts) {
+        postsByTopic = getDefaultForumPostsByTopic();
+    }
+    topics.forEach(topic => {
+        const slug = normalizeTopicSlug(topic?.slug || '');
+        if (!slug) return;
+        if (!Array.isArray(postsByTopic[slug])) postsByTopic[slug] = [];
+    });
     return { topics, postsByTopic };
 }
 
@@ -2452,6 +2500,8 @@ function localForumApi(path, options = {}) {
 
 function getForumApiCandidates() {
     const list = [];
+    const globalConfigured = typeof window !== 'undefined' ? window.FEMTECH_FORUM_API_BASE : '';
+    if (globalConfigured) list.push(String(globalConfigured).trim().replace(/\/+$/, ''));
     const configured = localStorage.getItem('femtechForumApiBase');
     if (configured) list.push(configured.replace(/\/+$/, ''));
     if (typeof window !== 'undefined' && window.location && /^https?:$/i.test(window.location.protocol)) {
