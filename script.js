@@ -2311,7 +2311,49 @@ function getDefaultForumApiBase() {
     return 'http://localhost:8787/api';
 }
 
-const FORUM_API_BASE = getDefaultForumApiBase();
+function getForumApiCandidates() {
+    const list = [];
+    const configured = localStorage.getItem('femtechForumApiBase');
+    if (configured) list.push(configured.replace(/\/+$/, ''));
+    if (typeof window !== 'undefined' && window.location && /^https?:$/i.test(window.location.protocol)) {
+        list.push(`${window.location.origin.replace(/\/+$/, '')}/api`);
+    }
+    list.push('http://localhost:8787/api');
+    return [...new Set(list.filter(Boolean))];
+}
+
+let resolvedForumApiBase = '';
+
+async function isForumApiAvailable(base) {
+    if (!base) return false;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 2200);
+    try {
+        const res = await fetch(`${base}/health`, { signal: controller.signal });
+        if (!res.ok) return false;
+        const payload = await res.json().catch(() => ({}));
+        return !!payload?.ok;
+    } catch (_) {
+        return false;
+    } finally {
+        clearTimeout(timeout);
+    }
+}
+
+async function resolveForumApiBase() {
+    if (resolvedForumApiBase) return resolvedForumApiBase;
+    const candidates = getForumApiCandidates();
+    for (const base of candidates) {
+        // Prefer a base that is confirmed by /health to avoid false 404 responses.
+        if (await isForumApiAvailable(base)) {
+            resolvedForumApiBase = base;
+            localStorage.setItem('femtechForumApiBase', base);
+            return base;
+        }
+    }
+    resolvedForumApiBase = getDefaultForumApiBase();
+    return resolvedForumApiBase;
+}
 
 async function forumApi(path, options = {}) {
     const reqOptions = {
@@ -2319,13 +2361,31 @@ async function forumApi(path, options = {}) {
         headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
         body: options.body ? JSON.stringify(options.body) : undefined
     };
-    const response = await fetch(`${FORUM_API_BASE}${path}`, reqOptions);
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-        const message = payload?.error || `Forum API error (${response.status})`;
-        throw new Error(message);
+    const preferredBase = await resolveForumApiBase();
+    const candidates = [preferredBase, ...getForumApiCandidates().filter(base => base !== preferredBase)];
+    let lastError = null;
+
+    for (const base of candidates) {
+        try {
+            const response = await fetch(`${base}${path}`, reqOptions);
+            const payload = await response.json().catch(() => ({}));
+            if (response.ok) {
+                resolvedForumApiBase = base;
+                localStorage.setItem('femtechForumApiBase', base);
+                return payload;
+            }
+            const message = payload?.error || `Forum API error (${response.status})`;
+            if (payload?.error) {
+                throw new Error(message);
+            }
+            lastError = new Error(message);
+        } catch (error) {
+            lastError = error;
+            continue;
+        }
     }
-    return payload;
+
+    throw lastError || new Error('Forum server is unavailable.');
 }
 
 function createTopicItemElement(topic, isActive) {
